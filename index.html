@@ -28,15 +28,12 @@
             const email = document.getElementById("email").value;
             const message = document.getElementById("message").value;
 
-            fetch("https://script.google.com/macros/s/AKfycbyCuGUC2fYk3koic_nHBQLqucAab3dI4MogJHEaVPJqtFo5gOgU5118kFv5ALdA_TGBGw/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbx-MJaqE8fS7Xc-bwg5inLt3_KQ-ul9SEYfslVzraqqHvYP-C6KW_piQ6Dr_HWzc0eJxg/exec", {
                 method: "POST",
-                body: JSON.stringify({name, email, message}),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                mode: 'no-cors',
+                body: JSON.stringify({name, email, message})
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => {
                 alert("Ticket submitted successfully!");
             })
             .catch(error => {
