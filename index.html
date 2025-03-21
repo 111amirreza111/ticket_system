@@ -4,25 +4,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Support Ticket</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: calc(100vh - 100px);
+        }
+
+        .info-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-panel h2 {
+            color: #2D3748;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .info-panel p {
+            color: #4A5568;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .info-panel ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .info-panel li {
+            padding: 0.5rem 0;
+            color: #4A5568;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-panel li::before {
+            content: "•";
+            color: #4A90E2;
+            font-weight: bold;
+        }
+
+        #supportForm {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2D3748;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.2rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            background: white;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            body {
+                padding: 15px;
+            }
+
+            .info-panel, #supportForm {
+                padding: 1.5rem;
+            }
+
+            textarea {
+                height: 100px;
+            }
+        }
+
+        /* Add these new styles */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4A90E2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.success {
+            background: #48BB78;
+        }
+
+        .toast.error {
+            background: #F56565;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-    <h1>Customer Support Ticket</h1>
-    <form id="supportForm">
-        <label for="name">Your Name:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
-        
-        <label for="email">Your Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="message">Your Message:</label><br>
-        <textarea id="message" name="message" rows="4" required></textarea><br><br>
-        
-        <button type="submit">Submit Ticket</button>
-    </form>
+    <div class="container">
+        <div class="info-panel">
+            <div>
+                <h2>Welcome to Our Support Center</h2>
+                <ul>
+                    <li>Our support team typically responds within 24 hours</li>
+                    <li>Make sure to provide detailed information about your issue</li>
+                    <li>Include any relevant error messages or screenshots</li>
+                    <li>Double-check your contact information</li>
+                </ul>
+            </div>
+            <p>We're here to help you resolve any issues you might encounter with our services. Your satisfaction is our top priority.</p>
+        </div>
+
+        <form id="supportForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Your Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <div class="spinner"></div>
+            <button type="submit">Submit Ticket</button>
+        </form>
+    </div>
 
     <script>
-        document.getElementById("supportForm").addEventListener("submit", function(event){
-            event.preventDefault(); // Prevent form submission
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        document.getElementById("supportForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const spinner = document.querySelector('.spinner');
+            const submitButton = document.querySelector('button[type="submit"]');
+            
+            // Show spinner and disable button
+            spinner.style.display = 'block';
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.7';
 
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
@@ -34,10 +273,16 @@
                 body: JSON.stringify({name, email, message})
             })
             .then(response => {
-                alert("Ticket submitted successfully!");
+                showToast('Ticket submitted successfully!', 'success');
             })
             .catch(error => {
-                alert("There was an error submitting your ticket.");
+                showToast('There was an error submitting your ticket.', 'error');
+            })
+            .finally(() => {
+                // Hide spinner and enable button
+                spinner.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
             });
         });
     </script>
